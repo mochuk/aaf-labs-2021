@@ -1,6 +1,6 @@
 import re
-
-arr_tree = []
+from function import *
+arr_tree = Tree_list()
 names = []
 
 def find_words(line):
@@ -21,19 +21,15 @@ def find_words(line):
         print("Неправильна назва команди або назва команди відсутня взагалі\n")
 
 def create(arr_words):
-    #дістаємо ім'я множини
     name = arr_words[1]
-    #перевіряємо правильність команди
     if (len(arr_words) == 2):
-        #перевіряємо наявність цієї множини (співпадіння назви з одним із елементів масиву)
         if (name in names):
             print("Множина", name, "не була створена, бо вже існує множина з таким іменем\n")
             print(names)
         else:
             names.append(name)
-            arr_tree.append([name,[]])
+            arr_tree[name] = []
             print("Множина", name, "була створена\n")
-            print(arr_tree)
     else:
         print("Неправильно введена команда 'CREATE'\n")
 
@@ -68,14 +64,8 @@ def insert(arr_words, line):
             else:
                 y = int(temp2[0])
             #записуємо х та у
-            for i in range(len(arr_tree)):
-                if (arr_tree[i][0] == name):
-                    m = i
-                    if (not arr_tree[i][1]):
-                        arr_tree[i][1] = ([x, y])
-                    else:
-                        arr_tree[m].append([x, y])
-            print("Точка (" + str(x) + ",", str(y) + ") була додана до", name, "\n")
+            arr_tree[name].add([x, y])
+            print(f"Точка ( {x},{y} ) була додана до {name}")
         else:
             print("Неправильно введена команда 'INSERT'\n")
     else:
@@ -111,6 +101,7 @@ def contains(arr_words, line):
     if (name in names):
         #перевіряємо правильність команди і дістаємо значення x та у
         a = re.split(r'[(]', line)
+
         N = re.findall(r'\w+', a[0])
         if (len(N) == 2):
             b = re.split(r'[)]', a[1])
@@ -131,17 +122,7 @@ def contains(arr_words, line):
             else:
                 y = int(temp2[0])
             #шукаємо х та у
-            for i in range(len(arr_tree)):
-                if (arr_tree[i][0] == name):
-                    m = i
-            for s in range(len(arr_tree[m])):
-                if (arr_tree[m][s][0] == x):
-                    if (arr_tree[m][s][1] == y):
-                        w+=1
-            if w == 1:
-                print("True\n")
-            else:
-                print("False\n")
+            arr_tree[name].contains(arr_tree[name].root, [x,y])
         else:
             print("Неправильно введена команда 'CONTAINS'\n")
     else:
@@ -164,12 +145,8 @@ def search(arr_words, line):
             print("Всі точки із множини", name, "не були виведені, бо множина з таким іменем не існує\n")
             print(names)
         else:
-            print("Всі точки із множини", name, "будуть виведені\n")
-            for i in range(len(arr_tree)):
-                if (arr_tree[i][0] == name):
-                    k = i
-            for j in range(1, len(arr_tree[k])):
-                print('(' + str(arr_tree[k][j][0]) + ',', str(arr_tree[k][j][1]) + ')')
+            print("Всі точки із множини", name, "будуть виведені:")
+            arr_tree[name].recursive_search(arr_tree[name].root)
     #перевіряємо правильність команди WHERE
     elif re.match(r'^[Ww][Hh][Ee][Rr][Ee]\b', arr_words[2]):
         if (len(arr_words) == 5):
@@ -274,6 +251,15 @@ def search(arr_words, line):
     else:
         print ("Неправильно введена команда 'SEARCH'\n")
 
+str = ''
 while True:
-    line = input('---> ')
-    find_words(line)
+    str += ' ' + input("-->").strip()
+    if ';' in str:
+    	for command in str.split(';'):
+            if command:
+                command = command.strip()
+                try:
+                  find_words(command)
+                except:
+                  print("You have done a mistake")
+                str = ''
