@@ -122,7 +122,7 @@ def contains(arr_words, line):
             else:
                 y = int(temp2[0])
             #шукаємо х та у
-            arr_tree[name].contains(arr_tree[name].root, [x,y])
+            print(arr_tree[name].contains(arr_tree[name].root, [x,y]))
         else:
             print("Неправильно введена команда 'CONTAINS'\n")
     else:

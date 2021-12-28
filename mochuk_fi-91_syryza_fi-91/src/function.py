@@ -64,18 +64,24 @@ class Tree():
           else: self.add_node(subroot.right, point, True)
         return f"Alles Gut"
 
+
     def contains(self, subroot, value):
-      try:
-        if subroot.data == value:
-          print("Yes, it's here")
-        elif subroot.left != None:
-          self.contains(subroot.left, value)
-        elif subroot.right != None:
-          self.contains(subroot.right, value)
+        if  self.Contains(subroot, value, True) == 1:
+            print(True)
         else:
-          print("No, it's isn't in tree")
-      except AttributeError:
-        pass
+            print(False)
+
+    def Contains(self, subroot, value, bool):
+        if subroot.data == value:
+            return 1
+        if((subroot.data[0] >= value[0]) and (subroot.left != None)):
+            if(self.Contains(subroot.left, value, not bool) == 1):
+                return 1
+        else:
+            if (subroot.right != None):
+                if (self.Contains(subroot.right, value, not bool) == 1):
+                    return 1
+
 
     def recursive_search(self, point):
       print(point.data)
