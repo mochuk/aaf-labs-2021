@@ -6,11 +6,12 @@ names = []
 def find_words(line):
     #ділимо за пробілами рядок на слова
     arr_words = re.findall(r'\w+', line)
-    #шукаємо команду
+    #шукаємо 
+    name = arr_words[1]
     if re.match(r'^[Cc][Rr][Ee][Aa][Tt][Ee]\b', arr_words[0]):
         create(arr_words)
     elif re.match(r'^[Ii][Nn][Ss][Ee][Rr][Tt]\b', arr_words[0]):
-        insert(arr_words, line)
+        insert(arr_words, line, arr_tree[name].size)
     elif re.match(r'^[Pp][Rr][Ii][Nn][Tt][_][Tt][Rr][Ee][Ee]\b', arr_words[0]):
         print_tree(arr_words)
     elif re.match(r'^[Cc][Oo][Nn][Tt][Aa][Ii][Nn][Ss]\b', arr_words[0]):
@@ -33,7 +34,7 @@ def create(arr_words):
     else:
         print("Неправильно введена команда 'CREATE'\n")
 
-def insert(arr_words, line):
+def insert(arr_words, line, size):
     k = 0
     m = 0
     temp1 = []
@@ -64,8 +65,14 @@ def insert(arr_words, line):
             else:
                 y = int(temp2[0])
             #записуємо х та у
-            arr_tree[name].add([x, y])
-            print(f"Точка ( {x},{y} ) була додана до {name}")
+            if (size == 0):
+                arr_tree[name].add([x, y])
+                print(f"Точка ( {x},{y} ) була додана до {name}")
+            elif(arr_tree[name].contains(arr_tree[name].root, [x,y]) == True):
+                print("Елемент був вже доданий")
+            else:
+                arr_tree[name].add([x, y])
+                print(f"Точка ( {x},{y} ) була додана до {name}")
         else:
             print("Неправильно введена команда 'INSERT'\n")
     else:

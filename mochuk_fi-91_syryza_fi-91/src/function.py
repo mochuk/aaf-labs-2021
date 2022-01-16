@@ -57,39 +57,55 @@ class Tree():
             else: self.add_node(subroot.left, point, True)
 
         elif (not bool):
-          if (subroot.left == None):
-              subroot.left = point
+          if (subroot.right == None):
+              subroot.right = point
               self.size += 1
               # print('Went to right')
           else: self.add_node(subroot.right, point, True)
         return f"Alles Gut"
 
-
     def contains(self, subroot, value):
         if  self.Contains(subroot, value, True) == 1:
-            print(True)
+            return True
         else:
-            print(False)
+            return False
 
     def Contains(self, subroot, value, bool):
-        if subroot.data == value:
-            return 1
-        if((subroot.data[0] >= value[0]) and (subroot.left != None)):
-            if(self.Contains(subroot.left, value, not bool) == 1):
-                return 1
-        else:
-            if (subroot.right != None):
-                if (self.Contains(subroot.right, value, not bool) == 1):
-                    return 1
-
+      if bool:
+        temp = 0
+      else: temp = 1
+      if value == subroot.data:
+          return 1
+      if (value[temp] <= subroot.data[temp]):
+          if subroot.left:
+              if self.Contains(subroot.left, value, temp) == 1:
+                  return 1
+      else:
+          if subroot.right:
+              if self.Contains(subroot.right, value, temp) == 1:
+                  return 1
+      # print(value, subroot.data)
+      # if value == subroot.data:
+      #   return 1
+      # elif (bool and (value[0] <= subroot.data[0])):
+      #   if (subroot.left != None):
+      #     self.Contains(subroot.left, value, False)
+      # elif bool:
+      #   if (subroot.right != None):
+      #     self.Contains(subroot.right, value, False)
+      # elif (not bool and (value[1] <= subroot.data[1])):
+      #   if (subroot.left != None):
+      #    self.Contains(subroot.left, value, True)
+      # elif (not bool):
+      #   if (subroot.right != None):
+      #     self.Contains(subroot.right, value, True)
 
     def recursive_search(self, point):
       print(point.data)
       if point.right != None:
-        self.recursive_search(point.right)
+          self.recursive_search(point.right)
       if point.left != None:
-        self.recursive_search(point.left)
-
+          self.recursive_search(point.left)
 
 # tree_list = Tree_list()
 # tree_list['ipt'] = []
